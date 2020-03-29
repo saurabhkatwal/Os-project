@@ -1,5 +1,6 @@
 #include<stdio.h>
 struct task
+
 {
 int arr_t;
 int bur_t;
