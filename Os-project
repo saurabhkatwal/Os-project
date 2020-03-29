@@ -1,0 +1,156 @@
+#include<stdio.h>
+struct task
+{
+int arr_t;
+int bur_t;
+int pid;
+int comp_t;
+int rem_bur_t;
+}fac[100], stu[100], z[100];
+
+int n, fc=0, sc=0, zc=0;
+int quantum;
+
+void roundRobin(){
+int time= z[0].arr_t, q=0, l=0, i, rc;
+while(time!=120 && l!=zc){
+for(i=0; i<=q; i++){
+if(z[i].rem_bur_t > quantum){
+time += quantum;
+z[i].rem_bur_t -= quantum;
+}
+else if(z[i].rem_bur_t <=quantum && z[i].rem_bur_t !=0){
+time += z[i].rem_bur_t;
+z[i].rem_bur_t =0;
+z[i].comp_t = time;
+l++;
+}
+else;
+}
+int p = q+1;
+for(rc= p; rc<zc; rc++){
+if(z[rc].arr_t <= time){
+q++;
+}
+}
+}	
+}
+
+void priority(){
+int isc=0, ifc= 0, min, flag;
+if( fc!=0  && sc!=0){
+while(isc<sc && ifc<fc){
+if(fac[ifc].arr_t == stu[isc].arr_t){
+z[zc] = fac[ifc];
+zc++;
+ifc++;
+z[zc]= stu[isc];
+zc++;
+isc++;
+}
+else if(fac[ifc].arr_t < stu[isc].arr_t){
+z[zc]= fac[ifc];
+zc++;
+ifc++;
+}
+else if(fac[ifc].arr_t > stu[isc].arr_t){
+z[zc]= stu[isc];
+zc++;
+isc++;
+} 
+else;
+}
+if(zc != (fc+sc)){
+if(fc!=ifc){
+while(ifc!=fc){
+z[zc]= fac[ifc];
+zc++;
+ifc++;
+}
+}
+else if(sc!=isc){
+while(isc!=sc){
+z[zc]= stu[isc];
+zc++;
+isc++;
+}
+}
+}
+}
+else if(fc==0){
+while(isc!=sc){
+z[zc]= stu[isc];
+zc++;
+isc++;
+}
+}
+else if(sc==0){
+while(ifc!=fc){
+z[zc]= fac[ifc];
+zc++;
+ifc++;
+}
+}
+else {
+printf("\n No valid Jobs available\n");
+}
+}
+
+void printer(){
+int i=0, total=0, sum=0; 
+double avg;
+printf("\nSummary for the Execution\n");
+printf("\nQuery ID\tArrival Time\tBurst time\tCompletion Time\tTurn Around Time\tWaiting Time");
+for(i; i<zc; i++){
+printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t\t%d",
+z[i].pid, (z[i].arr_t+1000), z[i].bur_t, (z[i].comp_t+1000), (z[i].comp_t-z[i].arr_t), ((z[i].comp_t-z[i].arr_t)- z[i].bur_t));
+total= z[i].comp_t;
+sum+= (z[i].comp_t-z[i].arr_t);
+}
+avg = sum/zc;
+printf("\n\nTotal time Spent for all queries: %d", total);
+printf("\nAverage query time: %lf", avg);
+printf("\nProcess Execution Complete");
+}
+
+void input(){
+int key,  i, t;
+printf("Enter total no of queries: "); scanf("%d", &n);
+if(n==0) { printf("\n No queries\n"); }
+else{
+printf("\nEnter quantum for each Process: "); scanf("%d", &quantum);
+printf("\nEnter 1 for faculty and 2 for student\n");
+for(i=0; i<n; i++){
+printf("\nJob Type (1/2): "); scanf("%d", &key);
+if(key==1){
+printf("Query Id: "); scanf("%d", &fac[fc].pid);
+printf("Arrival Time: "); scanf("%d", &t);
+if(t<1000 || t>1200){
+printf("\nEnter Correct time");
+input();
+}
+else{fac[fc].arr_t= t-1000;}
+printf("Burst time: "); scanf("%d", &fac[fc].bur_t);	 fac[fc].rem_bur_t= fac[fc].bur_t; 
+fc++;
+} else{
+printf("Enter Query Id: "); scanf("%d", &stu[sc].pid);
+printf("Enter Arrival Time: "); scanf("%d", &t); 
+if(t<1000 || t>1200){
+printf("\nEnter time\n");
+input();
+}
+else {stu[sc].arr_t= t-1000; }
+printf("Burst time: "); scanf("%d", &stu[sc].bur_t);	 stu[sc].rem_bur_t= stu[sc].bur_t; 
+sc++;
+}
+}
+}
+}
+
+main(){
+printf("please enter the time in a certain way(ex-10:00 in 1000 or 10:56 in 1056)\n");
+input();
+priority();
+roundRobin();
+printer();
+}
