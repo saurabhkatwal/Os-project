@@ -11,6 +11,7 @@ int rem_bur_t;
 int n, fc=0, sc=0, zc=0;
 int quantum;
 
+
 void roundRobin(){
 int time= z[0].arr_t, q=0, l=0, i, rc;
 while(time!=120 && l!=zc){
@@ -35,6 +36,7 @@ q++;
 }
 }	
 }
+
 
 void priority(){
 int isc=0, ifc= 0, min, flag;
